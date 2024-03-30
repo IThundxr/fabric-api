@@ -16,6 +16,9 @@
 
 package net.fabricmc.fabric.test.content.registry;
 
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,7 +89,8 @@ public final class ContentRegistryTest implements ModInitializer {
 		//  - right-clicking a 'test_event' block will emit a 'test_event' game event, which will have a sculk sensor frequency of 2
 		//  - instant health potions can be brewed from awkward potions with any item in the 'minecraft:small_flowers' tag
 		//  - dirty potions can be brewed by adding any item in the 'minecraft:dirt' tag to any standard potion
-
+		//  - redstone and any item in the 'fabric-content-registries-v0-testmod:compostables' tag is compostable
+		
 		CompostingChanceRegistry.INSTANCE.add(Items.OBSIDIAN, 0.5F);
 		FlammableBlockRegistry.getDefaultInstance().add(Blocks.DIAMOND_BLOCK, 4, 4);
 		FlammableBlockRegistry.getDefaultInstance().add(BlockTags.SAND, 4, 4);
@@ -161,6 +165,9 @@ public final class ContentRegistryTest implements ModInitializer {
 		 * This testmod uses an accessor due to Loom limitations that prevent TAWs from applying across Gradle subproject boundaries */
 		BrewingRecipeRegistryAccessor.callRegisterPotionType(dirtyPotion);
 		FabricBrewingRecipeRegistry.registerItemRecipe((PotionItem) Items.POTION, Ingredient.fromTag(ItemTags.DIRT), dirtyPotion);
+
+		TagKey<Item> COMPOSTABLES_TAG = TagKey.of(RegistryKeys.ITEM, new Identifier("fabric-content-registries-v0-testmod", "compostables"));
+		CompostingChanceRegistry.INSTANCE.add(COMPOSTABLES_TAG, 0.6F);
 	}
 
 	public static class TestEventBlock extends Block {

@@ -16,6 +16,8 @@
 
 package net.fabricmc.fabric.impl.content.registry;
 
+import java.util.HashMap;
+
 import net.minecraft.block.ComposterBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
@@ -24,6 +26,8 @@ import net.minecraft.registry.tag.TagKey;
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
 
 public class CompostingChanceRegistryImpl implements CompostingChanceRegistry {
+	public static final HashMap<TagKey<Item>, Float> ITEM_TAG_TO_LEVEL_INCREASE_CHANCE = new HashMap<>();
+
 	@Override
 	public Float get(ItemConvertible item) {
 		return ComposterBlock.ITEM_TO_LEVEL_INCREASE_CHANCE.getOrDefault(item.asItem(), 0.0F);
@@ -36,7 +40,7 @@ public class CompostingChanceRegistryImpl implements CompostingChanceRegistry {
 
 	@Override
 	public void add(TagKey<Item> tag, Float value) {
-		throw new UnsupportedOperationException("Tags currently not supported!");
+		ITEM_TAG_TO_LEVEL_INCREASE_CHANCE.put(tag, value);
 	}
 
 	@Override
@@ -46,7 +50,7 @@ public class CompostingChanceRegistryImpl implements CompostingChanceRegistry {
 
 	@Override
 	public void remove(TagKey<Item> tag) {
-		throw new UnsupportedOperationException("Tags currently not supported!");
+		ITEM_TAG_TO_LEVEL_INCREASE_CHANCE.remove(tag);
 	}
 
 	@Override
